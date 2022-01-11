@@ -73,7 +73,7 @@ const getRepoDetails = async function (repoName){
     //this is for fetching languages and making them an array
     const fetchLanguages = await fetch (repoInfo.languages_url); 
         const languageData = await fetchLanguages.json();
-        console.log(languageData);
+    
 
     //array for languages
     let languages = []
@@ -87,6 +87,9 @@ const getRepoDetails = async function (repoName){
 //displaying repo details
 const displayRepoDetails = function (repoInfo, languages) {
     repoData.innerHTML="";
+    repoData.classList.remove("hide");
+    repos.classList.add("hide");
+
     const div = document.createElement("div");
     div.innerHTML = `
     <h3>Name: ${repoInfo.name}</h3>
