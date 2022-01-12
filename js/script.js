@@ -111,29 +111,36 @@ backButton.addEventListener("click", function (e){
     backButton.classList.add("hide");
 });
 
- //search feature- this is the part we will try modifying to allow search by language
+ //dynamic search- applies entered text to lowercase value- should work for anything that is entered: repo names or languages used
 filterInput.addEventListener("input", function(e){
     const beingSearched = e.target.value;
     const repos = document.querySelectorAll(".repo");
     const searchedTextLower = beingSearched.toLowerCase();
 
+
     //matching search value (beingSearched/searchTextLower) to information on screen
-    for (const repo of repos) { //TROUBLESHOOTING: repolist is returned as not iterable, which means that the wrong variable is being selected for iterating through for the
-        //match, so if not repoList, then which variable in the array to iterate through??
+    for (const repo of repos) { 
         const repoTextLower= repo.innerText.toLowerCase();
         if (repoTextLower.includes(searchedTextLower)){
             repo.classList.remove("hide");
-        }  else {
+        } else if(repoTextLower.includes(languages)){ //this is the conditional statement added for trying to add search by language feature
+            repo.classList.remove("hide");
+        }
+         else {
             repo.classList.add("hide");
-        };  
+        };
+    
     //ADDING FUNCTIONALITY: Option A: add another conditional statement that the search feature where the lowercase searched values are compared to lowercase languages array
     //Option B: adapt the current search feature to include a languages in what it is comparing, for another else if statement
+    //Option C: convert to ES6, transfer everything to a react application and pass a reference from language array to if statement
+
+
+
     };
 });
 //The next part of the lesson will be about creating an array of languages
 //After you make that array, figure out if you can have the search fitler there. 
 //may require you to adjust the display to make every repo element visible, cross reference React App for hotel
 
-//tbd: how to pull project languages
-    //then add them as a search option
+//CHALLENGE: language array is in a function scope
 
