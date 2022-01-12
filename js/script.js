@@ -4,9 +4,10 @@ const overview = document.querySelector(".overview");
 const username = "ivybergstrom";
 //selects ul to display repos list
 const repoList = document.querySelector(".repo-list");
-const repos = document.querySelector(".repos");
+const allRepos = document.querySelector(".repos");
 const repoData= document.querySelector(".repo-data");
-
+const backButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
 
 //function for fetching API for user information
@@ -15,7 +16,7 @@ const getApi = async function () {
     const data = await showRequest.json();
     displayUserInfo(data);
 };
-
+    //this is only for collecting profile data about user
 getApi();
 
 //renders user info collected in getApi
@@ -45,9 +46,10 @@ const getRepos = async function () {
     displayRepoInfo(reposData);
 };
 
-//for rendering repo info, set to accept data fromm getRepos api call
-const displayRepoInfo = function (repos) {
-for (const repo of repos) {
+//for rendering repo list, set to accept data fromm getRepos api call
+const displayRepoInfo = function (allRepos) {
+    filterInput.classList.remove("hide");
+for (const repo of allRepos) {
     const repoItem = document.createElement("li");
     repoItem.classList.add("repo");
     repoItem.innerHTML = `
@@ -58,7 +60,7 @@ for (const repo of repos) {
     getRepos();
 };
 
-repoList.addEventListener("click", function (e){
+repoList.addEventListener("click", function (e){ //function for selecting individual repos to see details
     if (e.target.matches("h3")) {
         const repoName = e.target.innerText;
         getRepoDetails(repoName);
@@ -86,9 +88,10 @@ const getRepoDetails = async function (repoName){
 
 //displaying repo details
 const displayRepoDetails = function (repoInfo, languages) {
+    backButton.classList.remove("hide");
     repoData.innerHTML="";
     repoData.classList.remove("hide");
-    repos.classList.add("hide");
+    allRepos.classList.add("hide");
 
     const div = document.createElement("div");
     div.innerHTML = `
@@ -100,7 +103,33 @@ const displayRepoDetails = function (repoInfo, languages) {
 
     repoData.append(div);
 };
- 
+
+//for returning to list that displays all repos 
+backButton.addEventListener("click", function (e){
+    allRepos.classList.remove("hide");
+    repoData.classList.add("hide");
+    backButton.classList.add("hide");
+});
+
+ //search feature- this is the part we will try modifying to allow search by language
+filterInput.addEventListener("input", function(e){
+    const beingSearched = e.target.value;
+    const repos = document.querySelectorAll(".repo");
+    const searchedTextLower = beingSearched.toLowerCase();
+
+    //matching search value (beingSearched/searchTextLower) to information on screen
+    for (const repo of repos) { //TROUBLESHOOTING: repolist is returned as not iterable, which means that the wrong variable is being selected for iterating through for the
+        //match, so if not repoList, then which variable in the array to iterate through??
+        const repoTextLower= repo.innerText.toLowerCase();
+        if (repoTextLower.includes(searchedTextLower)){
+            repo.classList.remove("hide");
+        }  else {
+            repo.classList.add("hide");
+        };  
+    //ADDING FUNCTIONALITY: Option A: add another conditional statement that the search feature where the lowercase searched values are compared to lowercase languages array
+    //Option B: adapt the current search feature to include a languages in what it is comparing, for another else if statement
+    };
+});
 //The next part of the lesson will be about creating an array of languages
 //After you make that array, figure out if you can have the search fitler there. 
 //may require you to adjust the display to make every repo element visible, cross reference React App for hotel
