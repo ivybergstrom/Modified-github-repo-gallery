@@ -72,7 +72,7 @@ const getRepoDetails = async function (repoName){
     const repoInfo = await showRequest.json();
     console.log(repoInfo); 
 
-    //this is for fetching languages and making them an array
+    //this is for fetching languages so we can make them into an array
     const fetchLanguages = await fetch (repoInfo.languages_url); 
         const languageData = await fetchLanguages.json();
     
@@ -123,15 +123,20 @@ filterInput.addEventListener("input", function(e){
         const repoTextLower= repo.innerText.toLowerCase();
         if (repoTextLower.includes(searchedTextLower)){
             repo.classList.remove("hide");
-        } else if(repoTextLower.includes(languages)){ //this is the conditional statement added for trying to add search by language feature
+        } else if(repoTextLower.includes(languages)){ //this is the conditional statement added for trying to add search by language feature, does not currently work because languages comes back as undefined, duue to scope
             repo.classList.remove("hide");
         }
          else {
             repo.classList.add("hide");
         };
     
-    //ADDING FUNCTIONALITY: Option A: add another conditional statement that the search feature where the lowercase searched values are compared to lowercase languages array
-    //Option B: adapt the current search feature to include a languages in what it is comparing, for another else if statement
+    
+    //Option A: adapt the current search feature to include a languages in what it is comparing, for another else if statement
+        //issue: languages array is not a global variable, so it cannot read it from the section where we are matching the search value
+
+    //Option B: add a new search section, which would loop through languages[] and apply elements to a function that indicates if they would match
+        //still has issue of Option A
+
     //Option C: convert to ES6, transfer everything to a react application and pass a reference from language array to if statement
 
 
