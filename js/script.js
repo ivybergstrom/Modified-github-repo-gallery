@@ -5,7 +5,7 @@ const username = "ivybergstrom";
 //selects ul to display repos list
 const repoList = document.querySelector(".repo-list");
 const allRepos = document.querySelector(".repos");
-const repoData= document.querySelector(".repo-data");
+const repoData= document.querySelectorAll(".repo-data");
 const backButton = document.querySelector(".view-repos");
 const filterInput = document.querySelector(".filter-repos");
 
@@ -113,29 +113,37 @@ backButton.addEventListener("click", function (e){
 
  //dynamic search- applies entered text to lowercase value- should work for anything that is entered: repo names or languages used
 filterInput.addEventListener("input", function(e){
-    const beingSearched = e.target.value;
-    const repos = document.querySelectorAll(".repo");
+    const beingSearched = e.target.value; //this should encompass any searched text, repos or languages. 
+    const repos = document.querySelectorAll(".repo"); 
+    //attempting to add languages
+    const repoLanguages = repoData.languages; //confirmed: adding this does not break the page
     const searchedTextLower = beingSearched.toLowerCase();
-
 
     //matching search value (beingSearched/searchTextLower) to information on screen
     for (const repo of repos) { 
-        const repoTextLower= repo.innerText.toLowerCase();
+        const repoTextLower= repo.innerText.toLowerCase(); //this makes the element that is currently being looped through to lowerCase
+        //const repoDataLower = repoLanguages.toLowercase(); //this one breaks the page
         if (repoTextLower.includes(searchedTextLower)){
             repo.classList.remove("hide");
-        } else if(repoTextLower.includes(languages)){ //this is the conditional statement added for trying to add search by language feature, does not currently work because languages comes back as undefined, duue to scope
-            repo.classList.remove("hide");
-        }
-         else {
-            repo.classList.add("hide");
-        };
+            } else {
+                repo.classList.add("hide");
+            };
+        
     
     
     //Option A: adapt the current search feature to include a languages in what it is comparing, for another else if statement
         //issue: languages array is not a global variable, so it cannot read it from the section where we are matching the search value
+        //may be resolvable by making sure we pass repoData to dynamic search??
+        //may require a nested for...of loop, so it  could be part of the else statement?? The below code lines have been omitted for testing
+
+            //adding to make format consistent
+            //const repoDataLower = repoData.innerText.toLowerCase();
+            //else if(repoDataLower.includes(languages)){ //this is the conditional statement added for trying to add search by language feature, does not currently work because languages comes back as undefined, duue to scope
+            //repo.classList.remove("hide");}
 
     //Option B: add a new search section, which would loop through languages[] and apply elements to a function that indicates if they would match
         //still has issue of Option A
+
 
     //Option C: convert to ES6, transfer everything to a react application and pass a reference from language array to if statement
 
